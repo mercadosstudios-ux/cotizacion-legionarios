@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paquetes de Contenido — Academia Legionarios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --card-bg: #141414;
+    --card-border: #252525;
+    --white: #f5f2ee;
+    --muted: #888888;
+    --accent: #FFD401;
+    --accent-dim: #d9b300;
+    --accent-glow: rgba(255, 212, 1, 0.10);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 32px; border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.94); backdrop-filter: blur(12px); }
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: -0.5px; color: var(--white); text-decoration: none; }
+  .nav-logo span { color: var(--accent); }
+  .nav-badge { background: var(--accent-glow); border: 1px solid rgba(255,212,1,0.3); color: var(--accent); font-size: 12px; font-weight: 500; padding: 6px 14px; border-radius: 100px; }
+  .hero { padding: 80px 32px 56px; max-width: 760px; margin: 0 auto; text-align: center; }
+  .hero-eyebrow { display: inline-block; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; border: 1px solid var(--card-border); padding: 6px 16px; border-radius: 100px; }
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(34px, 7vw, 60px); font-weight: 800; line-height: 1.06; letter-spacing: -2px; margin-bottom: 20px; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero-sub { font-size: 16px; color: var(--muted); max-width: 500px; margin: 0 auto 36px; font-weight: 300; line-height: 1.7; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 100px; padding: 10px 20px; font-size: 14px; color: var(--white); }
+  .hero-tag .dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
+  .tabs-wrap { display: flex; justify-content: center; padding: 0 24px; margin-bottom: 48px; overflow-x: auto; }
+  .tabs { display: inline-flex; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 4px; gap: 4px; }
+  .tab { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--muted); background: none; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .tab.active { background: var(--accent); color: #0a0a0a; font-weight: 700; }
+  .tab:hover:not(.active) { color: var(--white); background: rgba(255,255,255,0.06); }
+  .plans-section { display: none; }
+  .plans-section.active { display: block; }
+  .plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; max-width: 1140px; margin: 0 auto; padding: 0 24px 48px; }
+  .plan-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 30px 26px 28px; display: flex; flex-direction: column; transition: border-color 0.2s, transform 0.2s; position: relative; overflow: hidden; }
+  .plan-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--card-border); }
+  .plan-card.featured { border-color: rgba(255,212,1,0.35); background: linear-gradient(160deg, #181500 0%, #141414 55%); }
+  .plan-card.featured::before { background: var(--accent); }
+  .plan-card:hover { transform: translateY(-3px); border-color: #333; }
+  .plan-card.featured:hover { border-color: rgba(255,212,1,0.55); }
+  .badge-wrap { min-height: 28px; margin-bottom: 14px; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 12px; border-radius: 100px; }
+  .badge-rec { background: var(--accent); color: #0a0a0a; }
+  .badge-max { background: rgba(255,212,1,0.1); color: var(--accent); border: 1px solid rgba(255,212,1,0.25); }
+  .plan-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+  .plan-name { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; color: var(--white); letter-spacing: -0.5px; margin-bottom: 8px; }
+  .plan-tagline { font-size: 13.5px; color: var(--muted); font-weight: 300; line-height: 1.55; margin-bottom: 24px; }
+  .plan-price { margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--card-border); }
+  .plan-price .amount { font-family: 'Syne', sans-serif; font-size: 34px; font-weight: 700; color: var(--white); letter-spacing: -1px; }
+  .plan-price .amount span { font-size: 18px; font-weight: 600; color: var(--muted); }
+  .plan-price .note { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .plan-price .note strong { color: var(--accent); }
+  .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
+  .stat-box { background: rgba(255,255,255,0.04); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px 14px; }
+  .stat-box .s-label { font-size: 11px; color: var(--muted); margin-bottom: 3px; }
+  .stat-box .s-value { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--accent); }
+  .features-title { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .feature-list { list-style: none; flex: 1; margin-bottom: 24px; }
+  .feature-list li { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; color: rgba(245,242,238,0.85); padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04); line-height: 1.45; }
+  .feature-list li:last-child { border-bottom: none; }
+  .feature-list li .check { flex-shrink: 0; width: 17px; height: 17px; border-radius: 50%; background: rgba(255,212,1,0.12); display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+  .feature-list li .check svg { width: 9px; height: 9px; stroke: var(--accent); stroke-width: 2.5; fill: none; }
+  .feature-list li .val { margin-left: auto; font-size: 11.5px; color: var(--muted); white-space: nowrap; padding-left: 8px; }
+  .feature-list li .val.accent { color: var(--accent); font-weight: 700; }
+  .plan-cta { display: block; text-align: center; padding: 14px 24px; border-radius: 12px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; text-decoration: none; transition: all 0.2s; cursor: pointer; }
+  .cta-primary { background: var(--accent); color: #0a0a0a; border: none; }
+  .cta-primary:hover { background: var(--accent-dim); }
+  .cta-secondary { background: transparent; color: var(--white); border: 1px solid var(--card-border); }
+  .cta-secondary:hover { background: rgba(255,255,255,0.06); border-color: #444; }
+  .disclaimer { max-width: 1140px; margin: 0 auto; padding: 0 24px 56px; }
+  .disclaimer-inner { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 28px 32px; margin-top: 8px; }
+  .disclaimer-inner h4 { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+  .disclaimer-inner ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .disclaimer-inner ul li { font-size: 13px; color: var(--muted); padding-left: 16px; position: relative; line-height: 1.55; }
+  .disclaimer-inner ul li::before { content: '—'; position: absolute; left: 0; color: rgba(255,212,1,0.4); }
+  .disclaimer-inner ul li strong { color: rgba(245,242,238,0.7); }
+  .payment-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; max-width: 420px; }
+  .payment-box { background: rgba(255,212,1,0.06); border: 1px solid rgba(255,212,1,0.18); border-radius: 12px; padding: 16px 20px; text-align: center; }
+  .payment-box .p-pct { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: var(--accent); }
+  .payment-box .p-label { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .formats-section, .funnels-section { max-width: 940px; margin: 0 auto; padding: 0 24px 80px; display: none; }
+  .formats-section.active, .funnels-section.active { display: block; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; letter-spacing: -0.8px; color: var(--white); margin-bottom: 8px; }
+  .section-sub { font-size: 15px; color: var(--muted); margin-bottom: 32px; }
+  .formats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .format-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 20px; transition: border-color 0.2s; }
+  .format-card:hover { border-color: rgba(255,212,1,0.25); }
+  .format-icon { font-size: 22px; margin-bottom: 10px; }
+  .format-card h3 { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+  .format-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .funnel-steps { display: flex; flex-direction: column; }
+  .funnel-step { display: flex; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--card-border); }
+  .funnel-step:last-child { border-bottom: none; }
+  .step-num { flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--card-border); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; color: var(--accent); }
+  .step-body h3 { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--white); margin-bottom: 5px; }
+  .step-body p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+  .step-tag { display: inline-block; font-size: 11px; color: var(--accent); background: var(--accent-glow); border: 1px solid rgba(255,212,1,0.2); padding: 3px 10px; border-radius: 100px; margin-top: 10px; font-weight: 500; }
+  footer { border-top: 1px solid var(--card-border); padding: 28px 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  footer p { font-size: 13px; color: var(--muted); }
+  footer a { color: var(--accent); text-decoration: none; font-size: 13px; font-weight: 500; }
+  footer a:hover { text-decoration: underline; }
+  @media (max-width: 600px) {
+    nav { padding: 16px 20px; }
+    .hero { padding: 56px 20px 40px; }
+    .plans { padding: 0 16px 40px; gap: 14px; }
+    .disclaimer { padding: 0 16px 48px; }
+    footer { padding: 24px 20px; }
+    .formats-section, .funnels-section { padding: 0 16px 60px; }
+    .tabs-wrap { padding: 0 16px; }
+    .disclaimer-inner { padding: 20px; }
+    .payment-row { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://mercadostudio.framer.website/" class="nav-logo" target="_blank">mercado<span>.</span>studio</a>
+  <span class="nav-badge">Propuesta activa</span>
+</nav>
+
+<section class="hero">
+  <span class="hero-eyebrow">Paquetes de contenido digital</span>
+  <h1>Llena matrículas en <em>Academia Legionarios</em></h1>
+  <p class="hero-sub">Estrategia de contenido diseñada exclusivamente para Pachacutec &amp; Ventanilla. Tres planes, un solo objetivo.</p>
+  <div class="hero-tag">
+    <span class="dot"></span>
+    Cotización activa · 2025
+  </div>
+</section>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('planes', this)">Los 3 paquetes</button>
+    <button class="tab" onclick="showTab('formatos', this)">Formatos de video</button>
+    <button class="tab" onclick="showTab('embudo', this)">El embudo</button>
+  </div>
+</div>
+
+<!-- PLANES -->
+<div class="plans-section active" id="tab-planes">
+  <div class="plans">
+
+    <!-- SEMILLA -->
+    <div class="plan-card">
+      <div class="badge-wrap"></div>
+      <div class="plan-label">Plan 01</div>
+      <div class="plan-name">Semilla</div>
+      <p class="plan-tagline">Para empezar a construir presencia, generar las primeras consultas de matrícula y comenzar con pauta guiada.</p>
+      <div class="plan-price">
+        <div class="amount"><span>S/</span>600 – 800</div>
+        <div class="note">al mes</div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="s-label">Asistencia</div>
+          <div class="s-value">Ilimitada</div>
+        </div>
+        <div class="stat-box">
+          <div class="s-label">Tiempo estimado</div>
+          <div class="s-value">25 – 30d</div>
+        </div>
+      </div>
+      <div class="features-title">Incluye</div>
+      <ul class="feature-list">
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Videos TikTok: entrenamiento + motivacional local
+          <span class="val accent">8/mes</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Posts de contenido (diseño gráfico / carrusel)
+          <span class="val accent">6/mes</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Guiones, captions y hashtags por pieza
+          <span class="val">incluido</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Calendario de publicación + horarios óptimos
+          <span class="val">incluido</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Setup bio + link WhatsApp CTA matrícula
+          <span class="val">1 vez</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Asesoramiento en campaña Meta Ads
+          <span class="val">incluido</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Asesoramiento en campaña TikTok Ads
+          <span class="val">incluido</span>
+        </li>
+      </ul>
+      <a href="https://wa.link/z53veq" target="_blank" class="plan-cta cta-secondary">Consultar por WhatsApp →</a>
+    </div>
+
+    <!-- CAPTACIÓN ACTIVA -->
+    <div class="plan-card featured">
+      <div class="badge-wrap">
+        <span class="badge badge-rec">⭐ Recomendado</span>
+      </div>
+      <div class="plan-label">Plan 02</div>
+      <div class="plan-name">Captación activa</div>
+      <p class="plan-tagline">El equilibrio ideal entre contenido orgánico de confianza y pauta pagada que empuja matrículas en temporada de admisión.</p>
+      <div class="plan-price">
+        <div class="amount"><span>S/</span>1,400 – 1,800</div>
+        <div class="note">al mes + <strong>pauta Ads</strong> aparte</div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="s-label">Asistencia</div>
+          <div class="s-value">Ilimitada</div>
+        </div>
+        <div class="stat-box">
+          <div class="s-label">Tiempo estimado</div>
+          <div class="s-value">25 – 30d</div>
+        </div>
+      </div>
+      <div class="features-title">Incluye</div>
+      <ul class="feature-list">
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Videos TikTok (todos los formatos)
+          <span class="val accent">12/mes</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Reels Instagram adaptados + exclusivos
+          <span class="val accent">12/mes</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Campañas Meta Ads (leads Pachacutec 17–25 años)
+          <span class="val">gestión incluida</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Campañas TikTok Ads
+          <span class="val">gestión incluida</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Plantilla de respuesta WhatsApp (conversión)
+          <span class="val">incluido</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Reporte mensual: alcance, consultas, CPL
+          <span class="val">incluido</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Asesoría en TikTok Live o Facebook Live
+          <span class="val">incluido</span>
+        </li>
+      </ul>
+      <a href="https://wa.link/z53veq" target="_blank" class="plan-cta cta-primary">Quiero este plan →</a>
+    </div>
+
+    <!-- DOMINIO PACHACUTEC -->
+    <div class="plan-card">
+      <div class="badge-wrap">
+        <span class="badge badge-max">Máximo impacto</span>
+      </div>
+      <div class="plan-label">Plan 03</div>
+      <div class="plan-name">Dominio Pachacutec</div>
+      <p class="plan-tagline">Para convertirse en la academia de referencia digital de toda la zona norte de Callao antes de que llegue la competencia.</p>
+      <div class="plan-price">
+        <div class="amount"><span>S/</span>2,800 – 3,500</div>
+        <div class="note">al mes + <strong>pauta Ads</strong> aparte</div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="s-label">Asistencia</div>
+          <div class="s-value">Ilimitada</div>
+        </div>
+        <div class="stat-box">
+          <div class="s-label">Tiempo estimado</div>
+          <div class="s-value">25 – 30d</div>
+        </div>
+      </div>
+      <div class="features-title">Incluye todo lo anterior +</div>
+      <ul class="feature-list">
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Diseños gráficos (posts, carruseles, stories)
+          <span class="val accent">15/mes</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Videos TikTok + Reels (todos los formatos)
+          <span class="val accent">20/mes</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          2 campañas Meta Ads + 2 campañas TikTok Ads
+          <span class="val">gestión incluida</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Landing page de matrícula + formulario automatizado
+          <span class="val">incluido</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Spot micro documental profesional mensual
+          <span class="val">1/mes</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Lead magnet PDF: Guía admisión PNP 2025
+          <span class="val">incluido</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Plantilla WhatsApp + asesoría TikTok / FB Live
+          <span class="val">incluido</span>
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Reporte bisemanal + reunión estratégica mensual
+          <span class="val">incluido</span>
+        </li>
+      </ul>
+      <a href="https://wa.link/z53veq" target="_blank" class="plan-cta cta-secondary">Quiero el máximo →</a>
+    </div>
+
+  </div>
+
+  <div class="disclaimer">
+    <div class="disclaimer-inner">
+      <h4>Términos de la proforma · Método de pago</h4>
+      <ul>
+        <li>La proforma incluye únicamente los servicios descritos; <strong>extras se cotizan aparte.</strong></li>
+        <li>Los gastos de grabación (pasajes y/o traslados) <strong>no están incluidos</strong> y serán asumidos por el cliente.</li>
+        <li>Los entregables serán de <strong>propiedad del cliente</strong> al finalizar el pago total.</li>
+        <li>El presupuesto de pauta (Meta Ads / TikTok Ads) se paga directamente a la plataforma y <strong>no está incluido</strong> en el fee de servicio.</li>
+        <li>Cotización válida por <strong>30 días</strong> desde la fecha de emisión.</li>
+      </ul>
+      <div class="payment-row">
+        <div class="payment-box">
+          <div class="p-pct">50%</div>
+          <div class="p-label">Al firmar contrato</div>
+        </div>
+        <div class="payment-box">
+          <div class="p-pct">50%</div>
+          <div class="p-label">Al entregar archivos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FORMATOS -->
+<div class="formats-section" id="tab-formatos">
+  <h2 class="section-title">Formatos de video</h2>
+  <p class="section-sub">Cada formato tiene un objetivo dentro del embudo de matrículas.</p>
+  <div class="formats-grid">
+    <div class="format-card">
+      <div class="format-icon">🏃</div>
+      <h3>Entrenamiento físico</h3>
+      <p>Clips de rutinas y sesiones en campo, mostrando la exigencia real de la academia en Pachacutec.</p>
+    </div>
+    <div class="format-card">
+      <div class="format-icon">🔥</div>
+      <h3>Motivacional localizado</h3>
+      <p>Videos de mentalidad y superación con contexto geográfico de Pachacutec y Ventanilla.</p>
+    </div>
+    <div class="format-card">
+      <div class="format-icon">📋</div>
+      <h3>Tips proceso PNP</h3>
+      <p>Contenido educativo sobre el proceso de admisión: fechas, requisitos y consejos clave.</p>
+    </div>
+    <div class="format-card">
+      <div class="format-icon">🎭</div>
+      <h3>Skit local</h3>
+      <p>Mini sketches humorísticos con referencias locales que generan shares y nuevo alcance orgánico.</p>
+    </div>
+    <div class="format-card">
+      <div class="format-icon">🏆</div>
+      <h3>Ingresante del mes</h3>
+      <p>Testimonio de un alumno que ingresó a la PNP. El formato de prueba social más poderoso.</p>
+    </div>
+    <div class="format-card">
+      <div class="format-icon">🎬</div>
+      <h3>Micro documental</h3>
+      <p>Spot de producción profesional: historia real de un estudiante o evento especial de la academia.</p>
+    </div>
+    <div class="format-card">
+      <div class="format-icon">📱</div>
+      <h3>Stories con CTA</h3>
+      <p>Historias de Instagram con botón de acción directo a WhatsApp o formulario de matrícula.</p>
+    </div>
+    <div class="format-card">
+      <div class="format-icon">🔴</div>
+      <h3>TikTok / Facebook Live</h3>
+      <p>Transmisiones en vivo asesoradas para resolver dudas y cerrar matrículas en tiempo real.</p>
+    </div>
+  </div>
+</div>
+
+<!-- EMBUDO -->
+<div class="funnels-section" id="tab-embudo">
+  <h2 class="section-title">El embudo de matrículas</h2>
+  <p class="section-sub">De extraño a alumno matriculado — así funciona el sistema.</p>
+  <div class="funnel-steps">
+    <div class="funnel-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Descubrimiento orgánico</h3>
+        <p>El postulante ve un video en TikTok de entrenamiento en Pachacutec o un tip PNP. Le aparece en su FYP porque vive en la zona norte del Callao.</p>
+        <span class="step-tag">TikTok · Instagram Reels</span>
+      </div>
+    </div>
+    <div class="funnel-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Reconocimiento de marca</h3>
+        <p>Visita el perfil, ve más videos, gana confianza. Los testimonios de ingresantes y el contenido localizado generan identidad y cercanía.</p>
+        <span class="step-tag">Perfil TikTok · Instagram · Live</span>
+      </div>
+    </div>
+    <div class="funnel-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Interés activo (pauta)</h3>
+        <p>Meta Ads y TikTok Ads impactan al segmento 17–25 años en radio Pachacutec/Ventanilla. Se captura el contacto del prospecto con el lead magnet PDF.</p>
+        <span class="step-tag">Meta Ads · TikTok Ads · Lead Form</span>
+      </div>
+    </div>
+    <div class="funnel-step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>Consulta por WhatsApp</h3>
+        <p>El postulante escribe al WhatsApp de la academia. La plantilla de respuesta guía la conversación hacia la matrícula con preguntas clave.</p>
+        <span class="step-tag">WhatsApp Business</span>
+      </div>
+    </div>
+    <div class="funnel-step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h3>Matrícula</h3>
+        <p>El alumno completa el proceso y se convierte en el próximo "ingresante del mes" para el siguiente ciclo de contenido.</p>
+        <span class="step-tag">Conversión ✓</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Elaborado por <a href="https://mercadostudio.framer.website/" target="_blank">Mercado Studio</a> · 2025</p>
+  <a href="https://wa.link/z53veq" target="_blank">¿Consultas? Escríbenos →</a>
+</footer>
+
+<script>
+  function showTab(tab, btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.plans-section, .formats-section, .funnels-section').forEach(s => s.classList.remove('active'));
+    const map = { planes: 'tab-planes', formatos: 'tab-formatos', embudo: 'tab-embudo' };
+    document.getElementById(map[tab]).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
